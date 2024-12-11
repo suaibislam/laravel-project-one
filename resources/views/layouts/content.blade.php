@@ -1,9 +1,9 @@
   <!-- Content Start -->
   <div class="content">
- 
 
-            <!-- Sale & Revenue Start -->
-            <!-- <div class="container-fluid pt-4 px-4">
+
+      <!-- Sale & Revenue Start -->
+      <!-- <div class="container-fluid pt-4 px-4">
                 <div class="row g-4">
                     <div class="col-sm-6 col-xl-3">
                         <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
@@ -43,11 +43,11 @@
                     </div>
                 </div>
             </div> -->
-            <!-- Sale & Revenue End -->
+      <!-- Sale & Revenue End -->
 
 
-            <!-- Sales Chart Start -->
-            <!-- <div class="container-fluid pt-4 px-4">
+      <!-- Sales Chart Start -->
+      <!-- <div class="container-fluid pt-4 px-4">
                 <div class="row g-4">
                     <div class="col-sm-12 col-xl-6">
                         <div class="bg-light text-center rounded p-4">
@@ -69,11 +69,11 @@
                     </div>
                 </div>
             </div> -->
-            <!-- Sales Chart End -->
+      <!-- Sales Chart End -->
 
 
-            <!-- Recent Sales Start -->
-            <!-- <div class="container-fluid pt-4 px-4">
+      <!-- Recent Sales Start -->
+      <!-- <div class="container-fluid pt-4 px-4">
                 <div class="bg-light text-center rounded p-4">
                     <div class="d-flex align-items-center justify-content-between mb-4">
                         <h6 class="mb-0">Recent Salse</h6>
@@ -143,76 +143,79 @@
                     </div>
                 </div>
             </div> -->
-    <div class="container">
-        <div class="row justify-content-center mt-4">
-            <!-- <div class="col-md-10 d-flex justify-content-end">
+      <div class="container">
+          <div class="row justify-content-center mt-4">
+              <!-- <div class="col-md-10 d-flex justify-content-end">
                 <a href="{{ route('products.create') }}" class="btn btn-dark">Create</a>
             </div> -->
-        </div>
-        <div class="row d-flex justify-content-center">
-            @if (Session::has('success'))
-            <div class="col-md-10 mt-4">
-                <div class="alert alert-success">
-                    {{ Session::get('success') }}
-                </div>
-            </div>    
-            @endif            
-            <div class="col-md-10">
-            <!-- card borde-0 shadow-lg my-4 -->
-                <div class="">
-                <!-- card-header bg-dark -->
-                    <div class="container">
-                        <h3 class="text-dark">Products List</h3>
-                    </div>
-                    <div class="card-body">
-                        <table id="employees-table" class="display table">
-                            <tr>
-                                <th>ID</th>
-                                <th>Photo</th>
-                                <th>Name</th>
-                                <th>Color</th>
-                                <th>Price</th>
-                                <th>Created at</th>
-                                <th>Action</th>
-                            </tr>
-                            @if ($products->isNotEmpty())
-                            @foreach ($products as $product)
-                            <tr>
-                                <td>{{ $product->id }}</td>
-                                <td>
-                                    @if ($product->image != "")
-                                        <img width="50" src="{{ asset('uploads/products/'.$product->image) }}" alt="">
-                                    @endif
-                                </td>
-                                <td>{{ $product->name }}</td>
-                                <td>{{ $product->color }}</td>
-                                <td>${{ $product->price }}</td>
-                                <td>{{ \Carbon\Carbon::parse($product->created_at)->format('d M, Y') }}</td>
-                                <td>
-                                    <a href="{{ route('products.edit',$product->id) }}" class="btn btn-dark">Edit</a>
-                                    <a href="#" onclick="deleteProduct({{ $product->id  }});" class="btn btn-danger">Delete</a>
-                                    <form id="delete-product-from-{{ $product->id  }}" action="{{ route('products.destroy',$product->id) }}" method="post">
-                                        @csrf
-                                        @method('delete')
-                                    </form>
-                                </td>
-                            </tr>   
-                            @endforeach
-                            
-                            @endif
-                            
-                        </table>
-                    </div>
-                   
-                </div>
-            </div>
-        </div>
-    </div>
-            <!-- Recent Sales End -->
+          </div>
+          <div class="row d-flex justify-content-center">
+              @if (Session::has('success'))
+              <div class="col-md-10 mt-4">
+                  <div class="alert alert-success">
+                      {{ Session::get('success') }}
+                  </div>
+              </div>
+              @endif
+              <div class="col-md-10">
+                  <!-- card borde-0 shadow-lg my-4 -->
+                  <div class="">
+                      <!-- card-header bg-dark -->
+                      <div class="container">
+                          <h3 class="text-dark">Products List</h3>
+                      </div>
+                      <div class="card-body">
+                          <table id="employees-table" class="display table">
+                              <tr>
+                                  <th>ID</th>
+                                  <th>Photo</th>
+                                  <th>Name</th>
+                                  <th>Description</th>
+                                  <th>Color</th>
+                                  <th>Price</th>
+                                  <th>Created at</th>
+                                  <th>Action</th>
+                              </tr>
+                              @if ($products->isNotEmpty())
+                              @foreach ($products as $product)
+                              <tr>
+                                  <td>{{ $product->id }}</td>
+                                  <td>
+                                      @if ($product->image != "")
+                                      <img width="50" src="{{ asset('uploads/products/'.$product->image) }}" alt="">
+                                      @endif
+                                  </td>
+                                  <td>{{ $product->name }}</td>
+
+                                  <td>{{ strip_tags($product->description) }}</td>
+                                  <td>{{ $product->color }}</td>
+                                  <td>${{ $product->price }}</td>
+                                  <td>{{ \Carbon\Carbon::parse($product->created_at)->format('d M, Y') }}</td>
+                                  <td>
+                                      <a href="{{ route('products.edit',$product->id) }}" class="btn btn-dark">Edit</a>
+                                      <a href="#" onclick="deleteProduct({{ $product->id  }});" class="btn btn-danger">Delete</a>
+                                      <form id="delete-product-from-{{ $product->id  }}" action="{{ route('products.destroy',$product->id) }}" method="post">
+                                          @csrf
+                                          @method('delete')
+                                      </form>
+                                  </td>
+                              </tr>
+                              @endforeach
+
+                              @endif
+
+                          </table>
+                      </div>
+
+                  </div>
+              </div>
+          </div>
+      </div>
+      <!-- Recent Sales End -->
 
 
-            <!-- Widgets Start -->
-            <!-- <div class="container-fluid pt-4 px-4">
+      <!-- Widgets Start -->
+      <!-- <div class="container-fluid pt-4 px-4">
                 <div class="row g-4">
                     <div class="col-sm-12 col-md-6 col-xl-4">
                         <div class="h-100 bg-light rounded p-4">
@@ -330,27 +333,27 @@
                     </div>
                 </div>
             </div> -->
-            <!-- Widgets End -->
+      <!-- Widgets End -->
 
 
-            <!-- Footer Start -->
-            <!-- <div class="container-fluid pt-4 px-4"> -->
-                <!-- <div class="bg-light rounded-top p-4">
+      <!-- Footer Start -->
+      <!-- <div class="container-fluid pt-4 px-4"> -->
+      <!-- <div class="bg-light rounded-top p-4">
                     <div class="row">
                         <div class="col-12 col-sm-6 text-center text-sm-start">
                             &copy; <a href="#">Your Site Name</a>, All Right Reserved. 
                         </div>
                         <div class="col-12 col-sm-6 text-center text-sm-end">
                             </*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
-                            <!-- Designed By <a href="https://htmlcodex.com">HTML Codex</a> -->
-                        <!-- </br>
+      <!-- Designed By <a href="https://htmlcodex.com">HTML Codex</a> -->
+      <!-- </br>
                         Distributed By <a class="border-bottom" href="https://themewagon.com" target="_blank">ThemeWagon</a>
                         </div> -->
-                    <!-- </div> -->
-                <!-- </div> --> 
-            <!-- </div> -->
-            <!-- Footer End -->
-        <!-- </div> -->
-        <!-- Content End -->
+      <!-- </div> -->
+      <!-- </div> -->
+      <!-- </div> -->
+      <!-- Footer End -->
+      <!-- </div> -->
+      <!-- Content End -->
 
-        
+     

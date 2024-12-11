@@ -35,6 +35,7 @@
                                 <th>ID</th>
                                 <th>Photo</th>
                                 <th>Name</th>
+                                <th>Description</th>
                                 <th>Color</th>
                                 <th>Price</th>
                                 <th>Created at</th>
@@ -50,6 +51,7 @@
                                     @endif
                                 </td>
                                 <td>{{ $product->name }}</td>
+                                <td>{{ $product->description }}</td>
                                 <td>{{ $product->color }}</td>
                                 <td>${{ $product->price }}</td>
                                 <td>{{ \Carbon\Carbon::parse($product->created_at)->format('d M, Y') }}</td>

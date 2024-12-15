@@ -59,7 +59,8 @@
     <!-- Page Content -->
     <main>
 
-        @include('layouts.content')
+        @include('layouts.content');
+       
     </main>
     <!-- </div> -->
 

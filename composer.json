@@ -13,6 +13,7 @@
         "laravel/tinker": "^2.7",
         "laravelcollective/html": "^6.4",
         "mews/purifier": "^3.4",
+        "stripe/stripe-php": "^16.3",
         "yajra/laravel-datatables-oracle": "^10.11"
     },
     "require-dev": {

@@ -36,10 +36,25 @@ class ProductController extends Controller
     {
         $products = Product::orderBy('created_at', 'DESC')->get();
 
+        // Fetch all products from the database
+        // $products = Product::all();
 
-        return view('welcome', [
-            'products' => $products
-        ]);
+        // Retrieve the cart from session or initialize as an empty array
+        $cart = session()->get('cart', []);
+        // var_dump( $cart);
+
+        // // Calculate the total price of items in the cart
+        // $total = array_reduce($cart, function ($carry, $item) {
+        //     return $carry + $item['price'] * $item['quantity'];
+        // }, 0);
+
+        return view('welcome', compact('products','cart')
+        // [
+        //     'products' => $products,
+        //     'cart'=> $cart,
+            // 'total'=> $total
+        // ]
+    );
     }
 
 

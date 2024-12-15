@@ -19,7 +19,7 @@
                 <!-- <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-laptop me-2"></i>Product</a> -->
                 <a href="{{ route('products.create') }}" class="nav-link "><i class="fa fa-laptop me-2"></i>Product</a>
                 <a href="{{ route('employees.index') }}" class="nav-link "><i class="fa fa-laptop me-2"></i>Data Table</a>
-                <a href="" class="nav-link "><i class="fa fa-laptop me-2"></i>Order</a>
+                <a href="admin/orders" class="nav-link "><i class="fa fa-laptop me-2"></i>Order</a>
                 <!-- <div class="dropdown-menu bg-transparent border-0">
                     <a href="{{ route('products.create') }}" class="" style="margin-left : 5rem; ">Create</a>
                     <a href="employees" class="" style="margin-left : 5rem;">Data Table</a>

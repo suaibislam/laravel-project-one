@@ -139,7 +139,7 @@
         </table>
 
         <h2 style="font-size:large;" class="text-primary">User Information</h2>
-        <form id="user-info-form" class="border p-3 shadow-sm rounded w-50 mx-auto" style="background: antiquewhite;">
+        <form id="user-info-form" class="border p-3 shadow-sm rounded w-50 " style="background: antiquewhite;">
           <div class="mb-3">
             <label for="user-name" class="form-label">Name</label>
             <input type="text" id="user-name" class="form-control" placeholder="Enter your name" required>

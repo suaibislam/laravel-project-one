@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+  <title>Shopping Cart</title>
+</head>
+
+<body>
+  <h1>Products</h1>
+  <div id="products">
+    @foreach($products as $product)
+    <div class="product" data-id="{{ $product->id }}" data-price="{{ $product->price }}">
+      <h3>{{ $product->name }}</h3>
+      <p>{{ $product->description }}</p>
+      <span>Price: ${{ $product->price }}</span>
+      <button class="add-to-cart">Add to Cart</button>
+    </div>
+    @endforeach
+  </div>
+
+  <h2>Your Cart</h2>
+  <table id="cart">
+    <thead>
+      <tr>
+        <th>Product</th>
+        <th>Price</th>
+        <th>Quantity</th>
+        <th>Total</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Cart items will be rendered here -->
+    </tbody>
+  </table>
+  <h3 id="grand-total">Grand Total: $0</h3>
+</body>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+const cartTable = document.querySelector("#cart tbody");
+const grandTotalElement = document.querySelector("#grand-total");
+const cart = {}; // Holds the cart data
+
+// Function to update the grand total
+function updateGrandTotal() {
+const grandTotal = Object.values(cart).reduce((sum, item) => sum + item.total, 0);
+grandTotalElement.textContent = `Grand Total: $${grandTotal}`;
+}
+
+// Function to render the cart in the table
+function renderCart() {
+cartTable.innerHTML = ''; // Clear existing rows
+for (const [id, item] of Object.entries(cart)) {
+const row = document.createElement('tr');
+row.innerHTML = `
+<td>${item.name}</td>
+<td>${item.price}</td>
+<td>
+  <button class="decrement" data-id="${id}">-</button>
+  ${item.quantity}
+  <button class="increment" data-id="${id}">+</button>
+</td>
+<td>${item.total}</td>
+<td><button class="delete" data-id="${id}">Delete</button></td>
+`;
+cartTable.appendChild(row);
+}
+updateGrandTotal();
+}
+
+// Add to cart logic
+document.querySelectorAll(".add-to-cart").forEach(button => {
+button.addEventListener("click", (e) => {
+const product = e.target.closest(".product");
+const id = product.dataset.id;
+
+fetch('/add-to-cart', {
+method: 'POST',
+headers: {
+'Content-Type': 'application/json',
+'X-CSRF-TOKEN': csrfToken
+},
+body: JSON.stringify({ id })
+})
+.then(response => response.json())
+.then(data => {
+Object.assign(cart, data.cart); // Update cart
+renderCart();
+})
+.catch(err => console.error("Error adding to cart:", err));
+});
+});
+
+// Event listener for cart table (handle increment, decrement, and delete)
+cartTable.addEventListener("click", (e) => {
+const id = e.target.dataset.id;
+
+if (e.target.classList.contains("increment") || e.target.classList.contains("decrement")) {
+const action = e.target.classList.contains("increment") ? 1 : -1;
+const newQuantity = cart[id].quantity + action;
+if (newQuantity > 0) {
+fetch('/update-cart', {
+method: 'POST',
+headers: {
+'Content-Type': 'application/json',
+'X-CSRF-TOKEN': csrfToken
+},
+body: JSON.stringify({
+id,
+quantity: newQuantity
+})
+})
+.then(response => response.json())
+.then(data => {
+Object.assign(cart, data.cart);
+renderCart();
+});
+}
+} else if (e.target.classList.contains("delete")) {
+console.log("Delete button clicked for Product ID:", id); // Debug log
+
+// Make a DELETE request to the backend
+fetch('/remove-from-cart', {
+method: 'POST', // Use POST to remove from cart as per Laravel convention
+headers: {
+'Content-Type': 'application/json',
+'X-CSRF-TOKEN': csrfToken // CSRF token for Laravel
+},
+body: JSON.stringify({
+id
+}) // Send product ID to backend
+})
+.then((response) => response.json())
+.then((data) => {
+console.log("Cart after deletion:", data.cart); // Debug log updated cart
+Object.assign(cart, data.cart); // Update local cart object
+renderCart(); // Re-render cart table
+})
+.catch((error) => {
+console.error("Error deleting product:", error); // Log any errors
+});
+}
+});
+});
+</script>
+
+</html>
